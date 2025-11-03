@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Control de Polladas - Perú Primero</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+      border-bottom: 5px solid #764ba2;
+    }
+
+    header h1 {
+      font-size: 2.8em;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    header p {
+      opacity: 0.95;
+      font-size: 1.1em;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 30px;
+      padding: 30px;
+    }
+
+    .sidebar {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+      border: 2px solid #e0e0e0;
+    }
+
+    .sidebar h3 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 18px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #667eea;
+      margin-bottom: 15px;
+    }
+
+    .stat-card.success {
+      border-left-color: #28a745;
+    }
+
+    .stat-card label {
+      display: block;
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .stat-card .value {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .stat-card.success .value {
+      color: #28a745;
+    }
+
+    .buttons-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-size: 0.95em;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #218838;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 40px 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
+    }
+
+    .table-wrapper {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 18px 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.95em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    tbody tr {
+      transition: all 0.3s;
+    }
+
+    tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    .persona-info {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .rango-input {
+      padding: 8px 12px;
+      border: 2px solid #667eea;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95em;
+      width: 120px;
+      background: white;
+    }
+
+    .rango-input:focus {
+      outline: none;
+      border-color: #764ba2;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
+    }
+
+    .numero-item {
+      display: inline-block;
+      margin: 5px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      border: 2px solid #ddd;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+      font-size: 0.9em;
+    }
+
+    .numero-item.vendido {
+      background: #28a745;
+      color: white;
+      border-color: #28a745;
+    }
+
+    .numero-item.pendiente:hover {
+      background: #e7f3ff;
+      border-color: #667eea;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 15px;
+      font-size: 0.9em;
+    }
+
+    .stat-mini {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 6px;
+      border-left: 3px solid #667eea;
+    }
+
+    .stat-mini label {
+      color: #666;
+      font-size: 0.85em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-mini .value {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .stat-mini.success {
+      border-left-color: #28a745;
+    }
+
+    .stat-mini.success .value {
+      color: #28a745;
+    }
+
+    .stat-mini.danger {
+      border-left-color: #dc3545;
+    }
+
+    .stat-mini.danger .value {
+      color: #dc3545;
+    }
+
+    .action-btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85em;
+      transition: all 0.2s;
+      background: #667eea;
+      color: white;
+    }
+
+    .action-btn:hover {
+      background: #764ba2;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #667eea;
+    }
+
+    .modal-header h2 {
+      color: #333;
+      margin: 0;
+    }
+
+    .close {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .close:hover {
+      color: #333;
+    }
+
+    .numeros-lista {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      background: #f8f9fa;
+      margin-bottom: 20px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    @media (max-width: 1200px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2em;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+
+      table {
+        font-size: 0.9em;
+      }
+
+      td, th {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📋 Control de Polladas PRO</h1>
+    </header>
+
+    <div class="main-content">
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <h3>📊 Resumen General</h3>
+        
+        <div class="stat-card">
+          <label>Total Personas</label>
+          <div class="value" id="totalPersonas">0</div>
+        </div>
+
+        <div class="stat-card success">
+          <label>Total Polladas</label>
+          <div class="value" id="totalPolladasGlobal">0</div>
+        </div>
+
+        <div class="stat-card success">
+          <label>Polladas Vendidas</label>
+          <div class="value" id="polladasVendidas">0</div>
+        </div>
+
+        <div class="stat-card">
+          <label>Dinero Recaudado</label>
+          <div class="value">S/. <span id="dineroRecaudado">0</span></div>
+          <div style="color: #667eea; font-weight: 600; margin-top: 8px;">Avance: <span id="porcentajeDinero">0</span>%</div>
+        </div>
+
+        <div class="stat-card">
+          <label>Dinero Faltante</label>
+          <div class="value">S/. <span id="dineroFaltante">0</span></div>
+        </div>
+
+        <div class="buttons-group">
+          <button class="btn btn-primary" onclick="exportarExcel()">📥 Exportar Excel</button>
+        </div>
+      </div>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <div class="content">
+        <div class="toolbar">
+          <div class="search-box">
+            <input type="text" id="buscar" placeholder="🔍 Buscar por nombre o DNI...">
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Persona</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Rango ✏️</th>
+                <th>Total</th>
+                <th>Vendidas</th>
+                <th>Dinero</th>
+                <th>% Avance</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tabla">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DETALLES -->
+  <div id="modalDetalles" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+        <span class="close" onclick="cerrarModal()">&times;</span>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-mini">
+          <label>Asignadas</label>
+          <div class="value" id="modalTotal">0</div>
+        </div>
+        <div class="stat-mini success">
+          <label>Vendidas ✓</label>
+          <div class="value" id="modalVendidas">0</div>
+        </div>
+        <div class="stat-mini danger">
+          <label>Pendientes</label>
+          <div class="value" id="modalPendientes">0</div>
+        </div>
+        <div class="stat-mini">
+          <label>Total S/.</label>
+          <div class="value" id="modalDineroTotal">0</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 25px; margin-bottom: 15px;">Click en los números para marcar como vendidos:</h3>
+      <div class="numeros-lista" id="numerosLista"></div>
+
+      <div class="modal-buttons">
+        <button class="btn btn-danger" onclick="cerrarModal()">Cerrar</button>
+        <button class="btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PRECIO_POLLADA = 10;
+    let personas = [];
+    let personaEditando = null;
+
+    // DATOS COMPLETOS CON TODOS LOS RANGOS
+    const datosPersonas = [
+      { id: 1, nombre: 'LUZMILA', apellido: 'CHARITO', dni: '07259047', celular: '968995459', rango: '1-10' },
+      { id: 2, nombre: 'CARMEN', apellido: 'ROSA', dni: '03863967', celular: '990776949', rango: '1-10' },
+      { id: 3, nombre: 'DORA', apellido: 'ELENA', dni: '03871857', celular: '928997379', rango: '1-10' },
+      { id: 4, nombre: 'MATILDE', apellido: '', dni: '03863442', celular: '932616363', rango: '1-10' },
+      { id: 5, nombre: 'ROSA', apellido: 'AMELIA', dni: '03871259', celular: '945860102', rango: '231-235' },
+      { id: 6, nombre: 'NELLY', apellido: 'JUDITH', dni: '03895746', celular: '969371170', rango: '1-10' },
+      { id: 7, nombre: 'DIEGO', apellido: 'ARMANDO', dni: '71585723', celular: '900603238', rango: '1-10' },
+      { id: 8, nombre: 'LAYLY', apellido: 'MELISSA', dni: '74713305', celular: '968842554', rango: '246-255' },
+      { id: 9, nombre: 'SARAI', apellido: 'PERLA', dni: '76642313', celular: '993004365', rango: '256-260' },
+      { id: 10, nombre: 'GLORIA', apellido: 'BEATRIZ', dni: '48296269', celular: '914597936', rango: '303-304' },
+      { id: 11, nombre: 'NICOLE', apellido: 'AZUCENA', dni: '72489687', celular: '926686629', rango: '31-40' },
+      { id: 12, nombre: 'ROSA', apellido: 'MARIA', dni: '45904489', celular: '942237086', rango: '11-20' },
+      { id: 13, nombre: 'MANUEL', apellido: '', dni: '03865492', celular: '941041416', rango: '1-10' },
+      { id: 14, nombre: 'JUAN', apellido: 'CARLOS', dni: '03872009', celular: '940287375', rango: '71-80' },
+      { id: 15, nombre: 'DACNE', apellido: 'TRINIDAD', dni: '03872453', celular: '964488210', rango: '141-150' },
+      { id: 16, nombre: 'RUBEN', apellido: 'DANIEL', dni: '74559295', celular: '963453559', rango: '171-180' },
+      { id: 17, nombre: 'GENARO', apellido: 'ALBERTO', dni: '03865893', celular: '969087926', rango: '151-160' },
+      { id: 18, nombre: 'GENOVEVA', apellido: '', dni: '03863892', celular: '914199443', rango: '1-10' },
+      { id: 19, nombre: 'JESSICA', apellido: 'ANAIS', dni: '43083776', celular: '950835305', rango: '1-10' },
+      { id: 20, nombre: 'TANIA', apellido: 'MILAGROS', dni: '41463928', celular: '913564421', rango: '1-10' },
+      { id: 21, nombre: 'ULBIA', apellido: '', dni: '03894549', celular: '913564421', rango: '111-120' },
+      { id: 22, nombre: 'VIOLETA', apellido: 'GREGORIA', dni: '03895143', celular: '976345706', rango: '310-311' },
+      { id: 23, nombre: 'JUDITH', apellido: 'ELENA', dni: '03865948', celular: '967144114', rango: '1-10' },
+      { id: 24, nombre: 'VILMA', apellido: '', dni: '03871289', celular: '929003276', rango: '61-70' },
+      { id: 25, nombre: 'MAGALY', apellido: 'SOCORRO', dni: '40247425', celular: '963762174', rango: '1-10' },
+      { id: 26, nombre: 'CARLOS', apellido: 'FELIX', dni: '03864594', celular: '934063586', rango: '1-10' }
+    ];
+
+    function extraerNumeros(rango) {
+      if (!rango || typeof rango !== 'string') return [];
+      
+      const partes = rango.trim().split('-');
+      if (partes.length !== 2) return [];
+      
+      const inicio = parseInt(partes[0].trim());
+      const fin = parseInt(partes[1].trim());
+      
+      if (isNaN(inicio) || isNaN(fin) || inicio > fin) return [];
+      
+      const numeros = [];
+      for (let i = inicio; i <= fin; i++) {
+        numeros.push(i);
+      }
+      
+      return numeros;
+    }
+
+    function inicializarPersonas() {
+      const datos = localStorage.getItem('personasControl');
+      if (datos) {
+        personas = JSON.parse(datos);
+      } else {
+        personas = datosPersonas.map(p => {
+          const numeros = extraerNumeros(p.rango);
+          return {
+            ...p,
+            numeros: numeros,
+            numerosPagados: [],
+            estado: 'pendiente'
+          };
+        });
+        guardarPersonas();
+      }
+    }
+
+    function guardarPersonas() {
+      localStorage.setItem('personasControl', JSON.stringify(personas));
+    }
+
+    function mostrarTabla() {
+      const tabla = document.getElementById('tabla');
+      const busqueda = document.getElementById('buscar').value.toLowerCase();
+      tabla.innerHTML = '';
+
+      const filtrados = personas.filter(p =>
+        p.nombre.toLowerCase().includes(busqueda) ||
+        p.apellido.toLowerCase().includes(busqueda) ||
+        p.dni.includes(busqueda)
+      );
+
+      filtrados.forEach(p => {
+        const totalNumeros = p.numeros.length;
+        const vendidas = p.numerosPagados.length;
+        const dineroTotal = totalNumeros * PRECIO_POLLADA;
+        const dineroRecaudado = vendidas * PRECIO_POLLADA;
+        const porcentaje = totalNumeros > 0 ? ((vendidas / totalNumeros) * 100).toFixed(1) : 0;
+
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+          <td class="persona-info">${p.nombre} ${p.apellido}</td>
+          <td>${p.dni}</td>
+          <td>${p.celular}</td>
+          <td>
+            <input type="text" class="rango-input" value="${p.rango}" 
+                   onchange="actualizarRango(${p.id}, this.value)" 
+                   placeholder="1-10">
+          </td>
+          <td><strong>${totalNumeros}</strong></td>
+          <td><span style="background: #28a745; color: white; padding: 6px 12px; border-radius: 6px; font-weight: bold;">${vendidas}</span></td>
+          <td><strong>S/. ${dineroRecaudado}</strong> / ${dineroTotal}</td>
+          <td>
+            <div style="width: 100%; height: 25px; background: #e9ecef; border-radius: 10px; overflow: hidden; position: relative;">
+              <div style="height: 100%; background: linear-gradient(90deg, #28a745, #20c997); width: ${porcentaje}%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8em; font-weight: bold;">
+                ${porcentaje}%
+              </div>
+            </div>
+          </td>
+          <td><button class="action-btn" onclick="abrirDetalle(${p.id})">👁️ Ver</button></td>
+        `;
+        tabla.appendChild(fila);
+      });
+
+      actualizarEstadisticas();
+    }
+
+    function actualizarRango(id, nuevoRango) {
+      const persona = personas.find(p => p.id === id);
+      if (!persona) return;
+
+      const numeros = extraerNumeros(nuevoRango);
+      
+      if (numeros.length === 0) {
+        alert('❌ Formato incorrecto. Usa: "1-10", "30-40", "150-160", etc.');
+        return;
+      }
+
+      persona.rango = nuevoRango;
+      persona.numeros = numeros;
+      persona.numerosPagados = persona.numerosPagados.filter(n => numeros.includes(n));
+      
+      guardarPersonas();
+      mostrarTabla();
+    }
+
+    function abrirDetalle(id) {
+      personaEditando = personas.find(p => p.id === id);
+      if (!personaEditando) return;
+
+      const totalNumeros = personaEditando.numeros.length;
+      const vendidas = personaEditando.numerosPagados.length;
+      const pendientes = totalNumeros - vendidas;
+      const dineroTotal = totalNumeros * PRECIO_POLLADA;
+
+      document.getElementById('modalTitle').textContent = `${personaEditando.nombre} ${personaEditando.apellido}`;
+      document.getElementById('modalTotal').textContent = totalNumeros;
+      document.getElementById('modalVendidas').textContent = vendidas;
+      document.getElementById('modalPendientes').textContent = pendientes;
+      document.getElementById('modalDineroTotal').textContent = dineroTotal;
+
+      const numerosLista = document.getElementById('numerosLista');
+      numerosLista.innerHTML = '';
+
+      personaEditando.numeros.forEach(num => {
+        const btn = document.createElement('div');
+        btn.className = `numero-item ${personaEditando.numerosPagados.includes(num) ? 'vendido' : 'pendiente'}`;
+        btn.textContent = num;
+        btn.onclick = () => toggleNumero(num);
+        numerosLista.appendChild(btn);
+      });
+
+      document.getElementById('modalDetalles').style.display = 'block';
+    }
+
+    function toggleNumero(numero) {
+      const index = personaEditando.numerosPagados.indexOf(numero);
+      if (index > -1) {
+        personaEditando.numerosPagados.splice(index, 1);
+      } else {
+        personaEditando.numerosPagados.push(numero);
+      }
+
+      const totalNumeros = personaEditando.numeros.length;
+      const vendidas = personaEditando.numerosPagados.length;
+      const pendientes = totalNumeros - vendidas;
+
+      document.getElementById('modalVendidas').textContent = vendidas;
+      document.getElementById('modalPendientes').textContent = pendientes;
+
+      const numerosLista = document.getElementById('numerosLista');
+      const btns = numerosLista.querySelectorAll('.numero-item');
+      btns.forEach(btn => {
+        const num = parseInt(btn.textContent);
+        if (personaEditando.numerosPagados.includes(num)) {
+          btn.classList.add('vendido');
+          btn.classList.remove('pendiente');
+        } else {
+          btn.classList.remove('vendido');
+          btn.classList.add('pendiente');
+        }
+      });
+    }
+
+    function guardarCambios() {
+      guardarPersonas();
+      mostrarTabla();
+      cerrarModal();
+      alert('✅ Cambios guardados correctamente');
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalDetalles').style.display = 'none';
+    }
+
+    function actualizarEstadisticas() {
+      const totalPersonas = personas.length;
+      const totalPolladasGlobal = personas.reduce((sum, p) => sum + p.numeros.length, 0);
+      const polladasVendidas = personas.reduce((sum, p) => sum + p.numerosPagados.length, 0);
+      const dineroRecaudado = polladasVendidas * PRECIO_POLLADA;
+      const dineroTotal = totalPolladasGlobal * PRECIO_POLLADA;
+      const dineroFaltante = dineroTotal - dineroRecaudado;
+      const porcentaje = totalPolladasGlobal > 0 ? ((polladasVendidas / totalPolladasGlobal) * 100).toFixed(1) : 0;
+
+      document.getElementById('totalPersonas').textContent = totalPersonas;
+      document.getElementById('totalPolladasGlobal').textContent = totalPolladasGlobal;
+      document.getElementById('polladasVendidas').textContent = polladasVendidas;
+      document.getElementById('dineroRecaudado').textContent = dineroRecaudado;
+      document.getElementById('dineroFaltante').textContent = dineroFaltante;
+      document.getElementById('porcentajeDinero').textContent = porcentaje;
+    }
+
+    function exportarExcel() {
+      let csv = 'Persona,DNI,Teléfono,Rango,Números Asignados,Vendidas,Pendientes,Dinero Total,Dinero Recaudado,% Avance\n';
+      
+      personas.forEach(p => {
+        const totalNumeros = p.numeros.length;
+        const vendidas = p.numerosPagados.length;
+        const pendientes = totalNumeros - vendidas;
+        const dineroTotal = totalNumeros * PRECIO_POLLADA;
+        const dineroRecaudado = vendidas * PRECIO_POLLADA;
+        const porcentaje = totalNumeros > 0 ? ((vendidas / totalNumeros) * 100).toFixed(1) : 0;
+
+        csv += `"${p.nombre} ${p.apellido}","${p.dni}","${p.celular}","${p.rango}",${totalNumeros},${vendidas},${pendientes},${dineroTotal},${dineroRecaudado},${porcentaje}%\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'reporte-polladas-' + new Date().toLocaleDateString() + '.csv';
+      link.click();
+    }
+
+    document.getElementById('buscar').addEventListener('keyup', mostrarTabla);
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('modalDetalles');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    // Inicializar
+    inicializarPersonas();
+    mostrarTabla();
+  </script>
+</body>
+</html>
