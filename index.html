@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Control de Polladas - Perú Primero</title>
+  <title>Sistema de Control de Polladas - Personalizable</title>
   <style>
     * {
       margin: 0;
@@ -138,6 +138,15 @@
       background: #218838;
     }
 
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
     .content {
       flex: 1;
     }
@@ -153,12 +162,11 @@
     .search-box {
       flex: 1;
       min-width: 250px;
-      position: relative;
     }
 
     .search-box input {
       width: 100%;
-      padding: 12px 40px 12px 15px;
+      padding: 12px 15px;
       border: 2px solid #ddd;
       border-radius: 8px;
       font-size: 1em;
@@ -199,10 +207,6 @@
       border-bottom: 1px solid #e9ecef;
     }
 
-    tbody tr {
-      transition: all 0.3s;
-    }
-
     tbody tr:hover {
       background: #f8f9fa;
     }
@@ -210,22 +214,6 @@
     .persona-info {
       font-weight: 600;
       color: #333;
-    }
-
-    .rango-input {
-      padding: 8px 12px;
-      border: 2px solid #667eea;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 0.95em;
-      width: 120px;
-      background: white;
-    }
-
-    .rango-input:focus {
-      outline: none;
-      border-color: #764ba2;
-      box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
     }
 
     .numero-item {
@@ -257,7 +245,6 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       margin-bottom: 15px;
-      font-size: 0.9em;
     }
 
     .stat-mini {
@@ -306,10 +293,19 @@
       transition: all 0.2s;
       background: #667eea;
       color: white;
+      margin-right: 5px;
     }
 
     .action-btn:hover {
       background: #764ba2;
+    }
+
+    .action-btn.delete {
+      background: #dc3545;
+    }
+
+    .action-btn.delete:hover {
+      background: #c82333;
     }
 
     .modal {
@@ -335,7 +331,7 @@
       padding: 30px;
       border-radius: 15px;
       width: 90%;
-      max-width: 700px;
+      max-width: 600px;
       box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
       animation: slideIn 0.3s;
       max-height: 85vh;
@@ -372,11 +368,37 @@
       font-size: 28px;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.2s;
     }
 
     .close:hover {
       color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95em;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
     }
 
     .numeros-lista {
@@ -387,6 +409,7 @@
       padding: 15px;
       background: #f8f9fa;
       margin-bottom: 20px;
+      margin-top: 15px;
     }
 
     .modal-buttons {
@@ -398,58 +421,35 @@
       border-top: 1px solid #ddd;
     }
 
-    .btn-danger {
-      background: #dc3545;
-      color: white;
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
     }
 
-    .btn-danger:hover {
-      background: #c82333;
+    .empty-state h3 {
+      color: #666;
+      margin-bottom: 10px;
     }
 
-    @media (max-width: 1200px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: static;
-      }
-
-      .stats-row {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2em;
-      }
-
-      .stats-row {
-        grid-template-columns: 1fr;
-      }
-
-      table {
-        font-size: 0.9em;
-      }
-
-      td, th {
-        padding: 10px;
-      }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>📋 Control de Polladas PRO</h1>
+      <h1>📋 Control de Polladas - Sistema Flexible</h1>
+      <p>Comienza vacío - Agrega tus propias personas y números</p>
     </header>
 
     <div class="main-content">
       <!-- SIDEBAR -->
       <div class="sidebar">
-        <h3>📊 Resumen General</h3>
+        <h3>📊 Resumen</h3>
         
         <div class="stat-card">
           <label>Total Personas</label>
@@ -457,19 +457,18 @@
         </div>
 
         <div class="stat-card success">
-          <label>Total Polladas</label>
-          <div class="value" id="totalPolladasGlobal">0</div>
+          <label>Total Números</label>
+          <div class="value" id="totalNumeros">0</div>
         </div>
 
         <div class="stat-card success">
-          <label>Polladas Vendidas</label>
-          <div class="value" id="polladasVendidas">0</div>
+          <label>Vendidos</label>
+          <div class="value" id="vendidos">0</div>
         </div>
 
         <div class="stat-card">
           <label>Dinero Recaudado</label>
           <div class="value">S/. <span id="dineroRecaudado">0</span></div>
-          <div style="color: #667eea; font-weight: 600; margin-top: 8px;">Avance: <span id="porcentajeDinero">0</span>%</div>
         </div>
 
         <div class="stat-card">
@@ -478,7 +477,9 @@
         </div>
 
         <div class="buttons-group">
-          <button class="btn btn-primary" onclick="exportarExcel()">📥 Exportar Excel</button>
+          <button class="btn btn-primary" onclick="abrirModalAgregar()">➕ Agregar Persona</button>
+          <button class="btn btn-success" onclick="exportarExcel()">📥 Exportar Excel</button>
+          <button class="btn btn-danger" onclick="limpiarTodo()">🗑️ Limpiar Todo</button>
         </div>
       </div>
 
@@ -497,15 +498,20 @@
                 <th>Persona</th>
                 <th>DNI</th>
                 <th>Teléfono</th>
-                <th>Rango ✏️</th>
+                <th>Rango</th>
                 <th>Total</th>
                 <th>Vendidas</th>
                 <th>Dinero</th>
                 <th>% Avance</th>
-                <th>Acción</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody id="tabla">
+              <tr>
+                <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+                  👤 No hay personas agregadas. Haz clic en "➕ Agregar Persona" para comenzar.
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -513,30 +519,77 @@
     </div>
   </div>
 
-  <!-- MODAL DETALLES -->
-  <div id="modalDetalles" class="modal">
+  <!-- MODAL AGREGAR/EDITAR PERSONA -->
+  <div id="modalAgregar" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 id="modalTitle"></h2>
+        <h2 id="modalTitulo">Agregar Nueva Persona</h2>
+        <span class="close" onclick="cerrarModal()">&times;</span>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre *</label>
+        <input type="text" id="nombre" placeholder="Ej: JUAN">
+      </div>
+
+      <div class="form-group">
+        <label>Apellido</label>
+        <input type="text" id="apellido" placeholder="Ej: PÉREZ">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>DNI</label>
+          <input type="text" id="dni" placeholder="Ej: 12345678">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" id="telefono" placeholder="Ej: 987654321">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Rango de Números * (Ej: 1-10, 30-40)</label>
+        <input type="text" id="rango" placeholder="1-10">
+      </div>
+
+      <div class="form-group">
+        <label>Números Vendidos (escribe los números separados por comas)</label>
+        <input type="text" id="numerosVendidos" placeholder="Ej: 1, 3, 5 (dejar en blanco si no hay)">
+        <small style="color: #666;">Escribe solo los números que ya fueron pagados</small>
+      </div>
+
+      <div class="modal-buttons">
+        <button class="btn btn-danger" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarPersona()">Guardar Persona</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL VER/EDITAR NÚMEROS -->
+  <div id="modalEditar" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalEditarTitulo"></h2>
         <span class="close" onclick="cerrarModal()">&times;</span>
       </div>
 
       <div class="stats-row">
         <div class="stat-mini">
-          <label>Asignadas</label>
+          <label>Asignados</label>
           <div class="value" id="modalTotal">0</div>
         </div>
         <div class="stat-mini success">
-          <label>Vendidas ✓</label>
-          <div class="value" id="modalVendidas">0</div>
+          <label>Vendidos ✓</label>
+          <div class="value" id="modalVendidos">0</div>
         </div>
         <div class="stat-mini danger">
           <label>Pendientes</label>
           <div class="value" id="modalPendientes">0</div>
         </div>
         <div class="stat-mini">
-          <label>Total S/.</label>
-          <div class="value" id="modalDineroTotal">0</div>
+          <label>Dinero Total</label>
+          <div class="value">S/. <span id="modalDinero">0</span></div>
         </div>
       </div>
 
@@ -545,7 +598,7 @@
 
       <div class="modal-buttons">
         <button class="btn btn-danger" onclick="cerrarModal()">Cerrar</button>
-        <button class="btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
+        <button class="btn btn-primary" onclick="guardarEdicion()">Guardar Cambios</button>
       </div>
     </div>
   </div>
@@ -554,76 +607,91 @@
     const PRECIO_POLLADA = 10;
     let personas = [];
     let personaEditando = null;
+    let modalActivo = null;
 
-    // DATOS COMPLETOS CON TODOS LOS RANGOS
-    const datosPersonas = [
-      { id: 1, nombre: 'LUZMILA', apellido: 'CHARITO', dni: '07259047', celular: '968995459', rango: '1-10' },
-      { id: 2, nombre: 'CARMEN', apellido: 'ROSA', dni: '03863967', celular: '990776949', rango: '1-10' },
-      { id: 3, nombre: 'DORA', apellido: 'ELENA', dni: '03871857', celular: '928997379', rango: '1-10' },
-      { id: 4, nombre: 'MATILDE', apellido: '', dni: '03863442', celular: '932616363', rango: '1-10' },
-      { id: 5, nombre: 'ROSA', apellido: 'AMELIA', dni: '03871259', celular: '945860102', rango: '231-235' },
-      { id: 6, nombre: 'NELLY', apellido: 'JUDITH', dni: '03895746', celular: '969371170', rango: '1-10' },
-      { id: 7, nombre: 'DIEGO', apellido: 'ARMANDO', dni: '71585723', celular: '900603238', rango: '1-10' },
-      { id: 8, nombre: 'LAYLY', apellido: 'MELISSA', dni: '74713305', celular: '968842554', rango: '246-255' },
-      { id: 9, nombre: 'SARAI', apellido: 'PERLA', dni: '76642313', celular: '993004365', rango: '256-260' },
-      { id: 10, nombre: 'GLORIA', apellido: 'BEATRIZ', dni: '48296269', celular: '914597936', rango: '303-304' },
-      { id: 11, nombre: 'NICOLE', apellido: 'AZUCENA', dni: '72489687', celular: '926686629', rango: '31-40' },
-      { id: 12, nombre: 'ROSA', apellido: 'MARIA', dni: '45904489', celular: '942237086', rango: '11-20' },
-      { id: 13, nombre: 'MANUEL', apellido: '', dni: '03865492', celular: '941041416', rango: '1-10' },
-      { id: 14, nombre: 'JUAN', apellido: 'CARLOS', dni: '03872009', celular: '940287375', rango: '71-80' },
-      { id: 15, nombre: 'DACNE', apellido: 'TRINIDAD', dni: '03872453', celular: '964488210', rango: '141-150' },
-      { id: 16, nombre: 'RUBEN', apellido: 'DANIEL', dni: '74559295', celular: '963453559', rango: '171-180' },
-      { id: 17, nombre: 'GENARO', apellido: 'ALBERTO', dni: '03865893', celular: '969087926', rango: '151-160' },
-      { id: 18, nombre: 'GENOVEVA', apellido: '', dni: '03863892', celular: '914199443', rango: '1-10' },
-      { id: 19, nombre: 'JESSICA', apellido: 'ANAIS', dni: '43083776', celular: '950835305', rango: '1-10' },
-      { id: 20, nombre: 'TANIA', apellido: 'MILAGROS', dni: '41463928', celular: '913564421', rango: '1-10' },
-      { id: 21, nombre: 'ULBIA', apellido: '', dni: '03894549', celular: '913564421', rango: '111-120' },
-      { id: 22, nombre: 'VIOLETA', apellido: 'GREGORIA', dni: '03895143', celular: '976345706', rango: '310-311' },
-      { id: 23, nombre: 'JUDITH', apellido: 'ELENA', dni: '03865948', celular: '967144114', rango: '1-10' },
-      { id: 24, nombre: 'VILMA', apellido: '', dni: '03871289', celular: '929003276', rango: '61-70' },
-      { id: 25, nombre: 'MAGALY', apellido: 'SOCORRO', dni: '40247425', celular: '963762174', rango: '1-10' },
-      { id: 26, nombre: 'CARLOS', apellido: 'FELIX', dni: '03864594', celular: '934063586', rango: '1-10' }
-    ];
+    function guardarDatos() {
+      localStorage.setItem('personasControl', JSON.stringify(personas));
+    }
+
+    function cargarDatos() {
+      const datos = localStorage.getItem('personasControl');
+      if (datos) {
+        personas = JSON.parse(datos);
+      }
+      mostrarTabla();
+    }
 
     function extraerNumeros(rango) {
       if (!rango || typeof rango !== 'string') return [];
-      
       const partes = rango.trim().split('-');
       if (partes.length !== 2) return [];
-      
       const inicio = parseInt(partes[0].trim());
       const fin = parseInt(partes[1].trim());
-      
       if (isNaN(inicio) || isNaN(fin) || inicio > fin) return [];
-      
       const numeros = [];
       for (let i = inicio; i <= fin; i++) {
         numeros.push(i);
       }
-      
       return numeros;
     }
 
-    function inicializarPersonas() {
-      const datos = localStorage.getItem('personasControl');
-      if (datos) {
-        personas = JSON.parse(datos);
-      } else {
-        personas = datosPersonas.map(p => {
-          const numeros = extraerNumeros(p.rango);
-          return {
-            ...p,
-            numeros: numeros,
-            numerosPagados: [],
-            estado: 'pendiente'
-          };
-        });
-        guardarPersonas();
-      }
+    function abrirModalAgregar() {
+      personaEditando = null;
+      document.getElementById('modalTitulo').textContent = 'Agregar Nueva Persona';
+      document.getElementById('nombre').value = '';
+      document.getElementById('apellido').value = '';
+      document.getElementById('dni').value = '';
+      document.getElementById('telefono').value = '';
+      document.getElementById('rango').value = '';
+      document.getElementById('numerosVendidos').value = '';
+      document.getElementById('modalAgregar').style.display = 'block';
+      modalActivo = 'agregar';
     }
 
-    function guardarPersonas() {
-      localStorage.setItem('personasControl', JSON.stringify(personas));
+    function guardarPersona() {
+      const nombre = document.getElementById('nombre').value.trim().toUpperCase();
+      const apellido = document.getElementById('apellido').value.trim().toUpperCase();
+      const dni = document.getElementById('dni').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const rango = document.getElementById('rango').value.trim();
+      const numerosVendidosStr = document.getElementById('numerosVendidos').value.trim();
+
+      if (!nombre || !rango) {
+        alert('❌ Nombre y Rango son obligatorios (Ej: 1-10)');
+        return;
+      }
+
+      const numeros = extraerNumeros(rango);
+      if (numeros.length === 0) {
+        alert('❌ Formato de rango incorrecto. Usa: "1-10", "30-40", etc.');
+        return;
+      }
+
+      let numerosPagados = [];
+      if (numerosVendidosStr) {
+        numerosPagados = numerosVendidosStr.split(',').map(n => {
+          const num = parseInt(n.trim());
+          return isNaN(num) ? null : num;
+        }).filter(n => n !== null && numeros.includes(n));
+      }
+
+      const nuevoId = Math.max(...personas.map(p => p.id || 0), 0) + 1;
+
+      personas.push({
+        id: nuevoId,
+        nombre,
+        apellido,
+        dni,
+        telefono,
+        rango,
+        numeros,
+        numerosPagados
+      });
+
+      guardarDatos();
+      mostrarTabla();
+      cerrarModal();
+      alert('✅ Persona agregada correctamente');
     }
 
     function mostrarTabla() {
@@ -631,15 +699,26 @@
       const busqueda = document.getElementById('buscar').value.toLowerCase();
       tabla.innerHTML = '';
 
+      if (personas.length === 0) {
+        tabla.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">👤 No hay personas. Agrega una para comenzar.</td></tr>`;
+        actualizarEstadisticas();
+        return;
+      }
+
       const filtrados = personas.filter(p =>
         p.nombre.toLowerCase().includes(busqueda) ||
         p.apellido.toLowerCase().includes(busqueda) ||
-        p.dni.includes(busqueda)
+        (p.dni && p.dni.includes(busqueda))
       );
+
+      if (filtrados.length === 0) {
+        tabla.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">No se encontraron resultados</td></tr>`;
+        return;
+      }
 
       filtrados.forEach(p => {
         const totalNumeros = p.numeros.length;
-        const vendidas = p.numerosPagados.length;
+        const vendidas = (p.numerosPagados || []).length;
         const dineroTotal = totalNumeros * PRECIO_POLLADA;
         const dineroRecaudado = vendidas * PRECIO_POLLADA;
         const porcentaje = totalNumeros > 0 ? ((vendidas / totalNumeros) * 100).toFixed(1) : 0;
@@ -647,24 +726,23 @@
         const fila = document.createElement('tr');
         fila.innerHTML = `
           <td class="persona-info">${p.nombre} ${p.apellido}</td>
-          <td>${p.dni}</td>
-          <td>${p.celular}</td>
-          <td>
-            <input type="text" class="rango-input" value="${p.rango}" 
-                   onchange="actualizarRango(${p.id}, this.value)" 
-                   placeholder="1-10">
-          </td>
+          <td>${p.dni || '-'}</td>
+          <td>${p.telefono || '-'}</td>
+          <td><strong>${p.rango}</strong></td>
           <td><strong>${totalNumeros}</strong></td>
           <td><span style="background: #28a745; color: white; padding: 6px 12px; border-radius: 6px; font-weight: bold;">${vendidas}</span></td>
           <td><strong>S/. ${dineroRecaudado}</strong> / ${dineroTotal}</td>
           <td>
-            <div style="width: 100%; height: 25px; background: #e9ecef; border-radius: 10px; overflow: hidden; position: relative;">
+            <div style="width: 100%; height: 25px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
               <div style="height: 100%; background: linear-gradient(90deg, #28a745, #20c997); width: ${porcentaje}%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8em; font-weight: bold;">
                 ${porcentaje}%
               </div>
             </div>
           </td>
-          <td><button class="action-btn" onclick="abrirDetalle(${p.id})">👁️ Ver</button></td>
+          <td>
+            <button class="action-btn" onclick="abrirModalEditar(${p.id})">✏️ Editar</button>
+            <button class="action-btn delete" onclick="eliminarPersona(${p.id})">🗑️ Borrar</button>
+          </td>
         `;
         tabla.appendChild(fila);
       });
@@ -672,55 +750,41 @@
       actualizarEstadisticas();
     }
 
-    function actualizarRango(id, nuevoRango) {
-      const persona = personas.find(p => p.id === id);
-      if (!persona) return;
-
-      const numeros = extraerNumeros(nuevoRango);
-      
-      if (numeros.length === 0) {
-        alert('❌ Formato incorrecto. Usa: "1-10", "30-40", "150-160", etc.');
-        return;
-      }
-
-      persona.rango = nuevoRango;
-      persona.numeros = numeros;
-      persona.numerosPagados = persona.numerosPagados.filter(n => numeros.includes(n));
-      
-      guardarPersonas();
-      mostrarTabla();
-    }
-
-    function abrirDetalle(id) {
+    function abrirModalEditar(id) {
       personaEditando = personas.find(p => p.id === id);
       if (!personaEditando) return;
 
       const totalNumeros = personaEditando.numeros.length;
-      const vendidas = personaEditando.numerosPagados.length;
+      const vendidas = (personaEditando.numerosPagados || []).length;
       const pendientes = totalNumeros - vendidas;
       const dineroTotal = totalNumeros * PRECIO_POLLADA;
 
-      document.getElementById('modalTitle').textContent = `${personaEditando.nombre} ${personaEditando.apellido}`;
+      document.getElementById('modalEditarTitulo').textContent = `${personaEditando.nombre} ${personaEditando.apellido}`;
       document.getElementById('modalTotal').textContent = totalNumeros;
-      document.getElementById('modalVendidas').textContent = vendidas;
+      document.getElementById('modalVendidos').textContent = vendidas;
       document.getElementById('modalPendientes').textContent = pendientes;
-      document.getElementById('modalDineroTotal').textContent = dineroTotal;
+      document.getElementById('modalDinero').textContent = dineroTotal;
 
       const numerosLista = document.getElementById('numerosLista');
       numerosLista.innerHTML = '';
 
       personaEditando.numeros.forEach(num => {
         const btn = document.createElement('div');
-        btn.className = `numero-item ${personaEditando.numerosPagados.includes(num) ? 'vendido' : 'pendiente'}`;
+        btn.className = `numero-item ${(personaEditando.numerosPagados || []).includes(num) ? 'vendido' : 'pendiente'}`;
         btn.textContent = num;
         btn.onclick = () => toggleNumero(num);
         numerosLista.appendChild(btn);
       });
 
-      document.getElementById('modalDetalles').style.display = 'block';
+      document.getElementById('modalEditar').style.display = 'block';
+      modalActivo = 'editar';
     }
 
     function toggleNumero(numero) {
+      if (!personaEditando.numerosPagados) {
+        personaEditando.numerosPagados = [];
+      }
+
       const index = personaEditando.numerosPagados.indexOf(numero);
       if (index > -1) {
         personaEditando.numerosPagados.splice(index, 1);
@@ -732,7 +796,7 @@
       const vendidas = personaEditando.numerosPagados.length;
       const pendientes = totalNumeros - vendidas;
 
-      document.getElementById('modalVendidas').textContent = vendidas;
+      document.getElementById('modalVendidos').textContent = vendidas;
       document.getElementById('modalPendientes').textContent = pendientes;
 
       const numerosLista = document.getElementById('numerosLista');
@@ -749,46 +813,60 @@
       });
     }
 
-    function guardarCambios() {
-      guardarPersonas();
+    function guardarEdicion() {
+      guardarDatos();
       mostrarTabla();
       cerrarModal();
       alert('✅ Cambios guardados correctamente');
     }
 
-    function cerrarModal() {
-      document.getElementById('modalDetalles').style.display = 'none';
+    function eliminarPersona(id) {
+      if (!confirm('⚠️ ¿Estás seguro de que deseas eliminar esta persona?')) return;
+      personas = personas.filter(p => p.id !== id);
+      guardarDatos();
+      mostrarTabla();
+      alert('✅ Persona eliminada');
+    }
+
+    function limpiarTodo() {
+      if (!confirm('⚠️ ¿ESTÁS SEGURO? Esto eliminará TODOS los datos')) return;
+      personas = [];
+      guardarDatos();
+      mostrarTabla();
+      alert('✅ Todos los datos fueron eliminados');
     }
 
     function actualizarEstadisticas() {
       const totalPersonas = personas.length;
-      const totalPolladasGlobal = personas.reduce((sum, p) => sum + p.numeros.length, 0);
-      const polladasVendidas = personas.reduce((sum, p) => sum + p.numerosPagados.length, 0);
-      const dineroRecaudado = polladasVendidas * PRECIO_POLLADA;
-      const dineroTotal = totalPolladasGlobal * PRECIO_POLLADA;
+      const totalNumeros = personas.reduce((sum, p) => sum + (p.numeros ? p.numeros.length : 0), 0);
+      const vendidos = personas.reduce((sum, p) => sum + (p.numerosPagados ? p.numerosPagados.length : 0), 0);
+      const dineroRecaudado = vendidos * PRECIO_POLLADA;
+      const dineroTotal = totalNumeros * PRECIO_POLLADA;
       const dineroFaltante = dineroTotal - dineroRecaudado;
-      const porcentaje = totalPolladasGlobal > 0 ? ((polladasVendidas / totalPolladasGlobal) * 100).toFixed(1) : 0;
 
       document.getElementById('totalPersonas').textContent = totalPersonas;
-      document.getElementById('totalPolladasGlobal').textContent = totalPolladasGlobal;
-      document.getElementById('polladasVendidas').textContent = polladasVendidas;
+      document.getElementById('totalNumeros').textContent = totalNumeros;
+      document.getElementById('vendidos').textContent = vendidos;
       document.getElementById('dineroRecaudado').textContent = dineroRecaudado;
       document.getElementById('dineroFaltante').textContent = dineroFaltante;
-      document.getElementById('porcentajeDinero').textContent = porcentaje;
     }
 
     function exportarExcel() {
-      let csv = 'Persona,DNI,Teléfono,Rango,Números Asignados,Vendidas,Pendientes,Dinero Total,Dinero Recaudado,% Avance\n';
+      if (personas.length === 0) {
+        alert('⚠️ No hay personas para exportar');
+        return;
+      }
+
+      let csv = 'Persona,DNI,Teléfono,Rango,Asignados,Vendidos,Dinero Total,Dinero Recaudado,% Avance\n';
       
       personas.forEach(p => {
         const totalNumeros = p.numeros.length;
-        const vendidas = p.numerosPagados.length;
-        const pendientes = totalNumeros - vendidas;
+        const vendidas = (p.numerosPagados || []).length;
         const dineroTotal = totalNumeros * PRECIO_POLLADA;
         const dineroRecaudado = vendidas * PRECIO_POLLADA;
         const porcentaje = totalNumeros > 0 ? ((vendidas / totalNumeros) * 100).toFixed(1) : 0;
 
-        csv += `"${p.nombre} ${p.apellido}","${p.dni}","${p.celular}","${p.rango}",${totalNumeros},${vendidas},${pendientes},${dineroTotal},${dineroRecaudado},${porcentaje}%\n`;
+        csv += `"${p.nombre} ${p.apellido}","${p.dni || ''}","${p.telefono || ''}","${p.rango}",${totalNumeros},${vendidas},${dineroTotal},${dineroRecaudado},${porcentaje}%\n`;
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -798,18 +876,25 @@
       link.click();
     }
 
+    function cerrarModal() {
+      document.getElementById('modalAgregar').style.display = 'none';
+      document.getElementById('modalEditar').style.display = 'none';
+      modalActivo = null;
+    }
+
     document.getElementById('buscar').addEventListener('keyup', mostrarTabla);
 
     window.onclick = function(event) {
-      const modal = document.getElementById('modalDetalles');
-      if (event.target == modal) {
-        modal.style.display = 'none';
+      if (event.target == document.getElementById('modalAgregar')) {
+        cerrarModal();
+      }
+      if (event.target == document.getElementById('modalEditar')) {
+        cerrarModal();
       }
     }
 
     // Inicializar
-    inicializarPersonas();
-    mostrarTabla();
+    cargarDatos();
   </script>
 </body>
 </html>
