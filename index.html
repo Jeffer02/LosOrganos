@@ -15,11 +15,11 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
-      padding: 20px;
+      padding: 15px;
     }
 
     .container {
-      max-width: 1600px;
+      max-width: 1400px;
       margin: 0 auto;
       background: white;
       border-radius: 15px;
@@ -30,32 +30,32 @@
     header {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
-      padding: 40px;
+      padding: 30px;
       text-align: center;
       border-bottom: 5px solid #764ba2;
     }
 
     header h1 {
-      font-size: 2.8em;
+      font-size: 2.5em;
       margin-bottom: 5px;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     header p {
       opacity: 0.95;
-      font-size: 1.1em;
+      font-size: 1em;
     }
 
     .main-content {
       display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 30px;
-      padding: 30px;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+      padding: 20px;
     }
 
     .sidebar {
       background: #f8f9fa;
-      padding: 25px;
+      padding: 20px;
       border-radius: 10px;
       height: fit-content;
       position: sticky;
@@ -65,19 +65,19 @@
 
     .sidebar h3 {
       color: #333;
-      margin-bottom: 20px;
-      font-size: 1.2em;
+      margin-bottom: 15px;
+      font-size: 1.1em;
       border-bottom: 3px solid #667eea;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
     }
 
     .stat-card {
       background: white;
-      padding: 18px;
+      padding: 15px;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       border-left: 4px solid #667eea;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
     }
 
     .stat-card.success {
@@ -87,13 +87,13 @@
     .stat-card label {
       display: block;
       color: #666;
-      font-size: 0.9em;
-      margin-bottom: 8px;
+      font-size: 0.85em;
+      margin-bottom: 6px;
       font-weight: 600;
     }
 
     .stat-card .value {
-      font-size: 2.2em;
+      font-size: 1.8em;
       font-weight: bold;
       color: #667eea;
     }
@@ -105,18 +105,18 @@
     .buttons-group {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 20px;
+      gap: 8px;
+      margin-top: 15px;
     }
 
     .btn {
-      padding: 12px 20px;
+      padding: 10px 15px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
       transition: all 0.3s;
-      font-size: 0.95em;
+      font-size: 0.9em;
     }
 
     .btn-primary {
@@ -153,23 +153,23 @@
 
     .toolbar {
       display: flex;
-      gap: 15px;
-      margin-bottom: 25px;
+      gap: 10px;
+      margin-bottom: 15px;
       flex-wrap: wrap;
       align-items: center;
     }
 
     .search-box {
       flex: 1;
-      min-width: 250px;
+      min-width: 200px;
     }
 
     .search-box input {
       width: 100%;
-      padding: 12px 15px;
+      padding: 10px 12px;
       border: 2px solid #ddd;
       border-radius: 8px;
-      font-size: 1em;
+      font-size: 0.95em;
       transition: all 0.3s;
     }
 
@@ -194,17 +194,18 @@
     th {
       background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
-      padding: 18px 15px;
+      padding: 12px 10px;
       text-align: left;
       font-weight: 600;
-      font-size: 0.95em;
+      font-size: 0.85em;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     td {
-      padding: 15px;
+      padding: 12px 10px;
       border-bottom: 1px solid #e9ecef;
+      font-size: 0.9em;
     }
 
     tbody tr:hover {
@@ -214,19 +215,20 @@
     .persona-info {
       font-weight: 600;
       color: #333;
+      min-width: 130px;
     }
 
     .numero-item {
       display: inline-block;
-      margin: 5px;
-      padding: 8px 12px;
+      margin: 3px;
+      padding: 6px 10px;
       border-radius: 6px;
       font-weight: 600;
       border: 2px solid #ddd;
       cursor: pointer;
       transition: all 0.2s;
       background: white;
-      font-size: 0.9em;
+      font-size: 0.8em;
     }
 
     .numero-item.vendido {
@@ -243,7 +245,7 @@
     .stats-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 10px;
       margin-bottom: 15px;
     }
 
@@ -256,13 +258,13 @@
 
     .stat-mini label {
       color: #666;
-      font-size: 0.85em;
+      font-size: 0.8em;
       display: block;
       margin-bottom: 4px;
     }
 
     .stat-mini .value {
-      font-size: 1.3em;
+      font-size: 1.2em;
       font-weight: bold;
       color: #333;
     }
@@ -283,17 +285,24 @@
       color: #dc3545;
     }
 
+    .action-buttons {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
     .action-btn {
-      padding: 8px 14px;
+      padding: 6px 10px;
       border: none;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 0.85em;
+      font-size: 0.75em;
       transition: all 0.2s;
       background: #667eea;
       color: white;
-      margin-right: 5px;
+      min-width: 35px;
+      text-align: center;
     }
 
     .action-btn:hover {
@@ -306,6 +315,27 @@
 
     .action-btn.delete:hover {
       background: #c82333;
+    }
+
+    .action-btn.move-up {
+      background: #007bff;
+    }
+
+    .action-btn.move-up:hover {
+      background: #0056b3;
+    }
+
+    .action-btn.move-down {
+      background: #6c757d;
+    }
+
+    .action-btn.move-down:hover {
+      background: #545b62;
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .modal {
@@ -327,14 +357,14 @@
 
     .modal-content {
       background-color: white;
-      margin: 5% auto;
-      padding: 30px;
+      margin: 10% auto;
+      padding: 25px;
       border-radius: 15px;
       width: 90%;
-      max-width: 600px;
+      max-width: 550px;
       box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
       animation: slideIn 0.3s;
-      max-height: 85vh;
+      max-height: 80vh;
       overflow-y: auto;
     }
 
@@ -353,14 +383,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
+      margin-bottom: 15px;
+      padding-bottom: 12px;
       border-bottom: 2px solid #667eea;
     }
 
     .modal-header h2 {
       color: #333;
       margin: 0;
+      font-size: 1.3em;
     }
 
     .close {
@@ -375,23 +406,23 @@
     }
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .form-group label {
       display: block;
       color: #333;
       font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 0.95em;
+      margin-bottom: 6px;
+      font-size: 0.9em;
     }
 
     .form-group input {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
       border: 2px solid #ddd;
       border-radius: 8px;
-      font-size: 1em;
+      font-size: 0.95em;
       transition: all 0.3s;
     }
 
@@ -402,29 +433,76 @@
     }
 
     .numeros-lista {
-      max-height: 400px;
+      max-height: 300px;
       overflow-y: auto;
       border: 1px solid #ddd;
       border-radius: 6px;
-      padding: 15px;
+      padding: 12px;
       background: #f8f9fa;
-      margin-bottom: 20px;
-      margin-top: 15px;
+      margin-bottom: 15px;
+      margin-top: 12px;
     }
 
     .modal-buttons {
       display: flex;
       gap: 10px;
       justify-content: flex-end;
-      margin-top: 25px;
-      padding-top: 20px;
+      margin-top: 20px;
+      padding-top: 15px;
       border-top: 1px solid #ddd;
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px;
+      gap: 12px;
+    }
+
+    @media (max-width: 1024px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      th {
+        font-size: 0.8em;
+        padding: 10px 8px;
+      }
+
+      td {
+        padding: 10px 8px;
+        font-size: 0.85em;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2em;
+      }
+
+      .sidebar {
+        margin-bottom: 20px;
+      }
+
+      table {
+        font-size: 0.8em;
+      }
+
+      th {
+        padding: 8px 5px;
+      }
+
+      td {
+        padding: 8px 5px;
+      }
+
+      .action-btn {
+        padding: 5px 8px;
+        font-size: 0.7em;
+      }
     }
   </style>
 </head>
@@ -432,10 +510,11 @@
   <div class="container">
     <header>
       <h1>📋 Control de Polladas</h1>
+      <p>Sistema Completo de Gestión</p>
     </header>
 
     <div class="main-content">
-      <!-- SIDEBAR -->
+   
       <div class="sidebar">
         <h3>📊 Resumen</h3>
         
@@ -465,17 +544,17 @@
         </div>
 
         <div class="buttons-group">
-          <button class="btn btn-primary" onclick="abrirModalAgregar()">➕ Agregar Persona</button>
-          <button class="btn btn-success" onclick="exportarExcel()">📥 Exportar Excel</button>
-          <button class="btn btn-danger" onclick="limpiarTodo()">🗑️ Limpiar Todo</button>
+          <button class="btn btn-primary" onclick="abrirModalAgregar()">➕ Agregar</button>
+          <button class="btn btn-success" onclick="exportarExcel()">📥 Exportar</button>
+          <button class="btn btn-danger" onclick="limpiarTodo()">🗑️ Limpiar</button>
         </div>
       </div>
 
-      <!-- CONTENIDO PRINCIPAL -->
+    
       <div class="content">
         <div class="toolbar">
           <div class="search-box">
-            <input type="text" id="buscar" placeholder="🔍 Buscar por nombre o DNI...">
+            <input type="text" id="buscar" placeholder="🔍 Buscar...">
           </div>
         </div>
 
@@ -496,8 +575,8 @@
             </thead>
             <tbody id="tabla">
               <tr>
-                <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
-                  👤 No hay personas. Haz clic en "➕ Agregar Persona" para comenzar.
+                <td colspan="9" style="text-align: center; padding: 30px; color: #999;">
+                  👤 No hay personas. Haz clic en "➕ Agregar" para comenzar.
                 </td>
               </tr>
             </tbody>
@@ -507,7 +586,7 @@
     </div>
   </div>
 
-  <!-- MODAL AGREGAR PERSONA -->
+
   <div id="modalAgregar" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -543,12 +622,12 @@
 
       <div class="modal-buttons">
         <button class="btn btn-danger" onclick="cerrarModal()">Cancelar</button>
-        <button class="btn btn-primary" onclick="guardarPersona()">Guardar Persona</button>
+        <button class="btn btn-primary" onclick="guardarPersona()">Guardar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL EDITAR NÚMEROS -->
+
   <div id="modalEditar" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -575,12 +654,12 @@
         </div>
       </div>
 
-      <h3 style="margin-top: 25px; margin-bottom: 15px;">Click en los números para marcar como vendidos:</h3>
+      <h3 style="margin-top: 20px; margin-bottom: 12px;">Click en los números para marcar como vendidos:</h3>
       <div class="numeros-lista" id="numerosLista"></div>
 
       <div class="modal-buttons">
         <button class="btn btn-danger" onclick="cerrarModal()">Cerrar</button>
-        <button class="btn btn-primary" onclick="guardarEdicion()">Guardar Cambios</button>
+        <button class="btn btn-primary" onclick="guardarEdicion()">Guardar</button>
       </div>
     </div>
   </div>
@@ -663,17 +742,31 @@
       alert('✅ Persona agregada correctamente');
     }
 
+    function moverPersona(id, direccion) {
+      const indice = personas.findIndex(p => p.id === id);
+      if (indice === -1) return;
+
+      if (direccion === 'arriba' && indice > 0) {
+        [personas[indice], personas[indice - 1]] = [personas[indice - 1], personas[indice]];
+      } else if (direccion === 'abajo' && indice < personas.length - 1) {
+        [personas[indice], personas[indice + 1]] = [personas[indice + 1], personas[indice]];
+      }
+
+      guardarDatos();
+      mostrarTabla();
+    }
+
     function mostrarTabla() {
       const tabla = document.getElementById('tabla');
-      const busqueda = document.getElementById('buscar').value.toLowerCase();
       tabla.innerHTML = '';
 
       if (personas.length === 0) {
-        tabla.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">👤 No hay personas. Agrega una para comenzar.</td></tr>`;
+        tabla.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #999;">👤 No hay personas. Agrega una para comenzar.</td></tr>`;
         actualizarEstadisticas();
         return;
       }
 
+      const busqueda = document.getElementById('buscar').value.toLowerCase();
       const filtrados = personas.filter(p =>
         p.nombre.toLowerCase().includes(busqueda) ||
         p.apellido.toLowerCase().includes(busqueda) ||
@@ -681,36 +774,44 @@
       );
 
       if (filtrados.length === 0) {
-        tabla.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">No se encontraron resultados</td></tr>`;
+        tabla.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 30px; color: #999;">No se encontraron resultados</td></tr>`;
         return;
       }
 
-      filtrados.forEach(p => {
+      filtrados.forEach((p) => {
         const totalNumeros = p.numeros.length;
         const vendidas = (p.numerosPagados || []).length;
         const dineroTotal = totalNumeros * PRECIO_POLLADA;
         const dineroRecaudado = vendidas * PRECIO_POLLADA;
         const porcentaje = totalNumeros > 0 ? ((vendidas / totalNumeros) * 100).toFixed(1) : 0;
 
+        const indiceReal = personas.findIndex(per => per.id === p.id);
+        const puedeSubir = indiceReal > 0;
+        const puedeBajar = indiceReal < personas.length - 1;
+
         const fila = document.createElement('tr');
         fila.innerHTML = `
           <td class="persona-info">${p.nombre} ${p.apellido}</td>
           <td>${p.dni || '-'}</td>
           <td>${p.telefono || '-'}</td>
-          <td><strong>${p.rango}</strong></td>
+          <td>${p.rango}</td>
           <td><strong>${totalNumeros}</strong></td>
-          <td><span style="background: #28a745; color: white; padding: 6px 12px; border-radius: 6px; font-weight: bold;">${vendidas}</span></td>
-          <td><strong>S/. ${dineroRecaudado}</strong> / ${dineroTotal}</td>
+          <td><span style="background: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">${vendidas}</span></td>
+          <td>S/. ${dineroRecaudado} / ${dineroTotal}</td>
           <td>
-            <div style="width: 100%; height: 25px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
-              <div style="height: 100%; background: linear-gradient(90deg, #28a745, #20c997); width: ${porcentaje}%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8em; font-weight: bold;">
+            <div style="width: 80px; height: 20px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
+              <div style="height: 100%; background: linear-gradient(90deg, #28a745, #20c997); width: ${porcentaje}%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7em; font-weight: bold;">
                 ${porcentaje}%
               </div>
             </div>
           </td>
-          <td>
-            <button class="action-btn" onclick="abrirModalEditar(${p.id})">✏️ Editar</button>
-            <button class="action-btn delete" onclick="eliminarPersona(${p.id})">🗑️ Borrar</button>
+          <td style="white-space: nowrap;">
+            <div class="action-buttons">
+              <button class="action-btn move-up" onclick="moverPersona(${p.id}, 'arriba')" ${!puedeSubir ? 'disabled' : ''} title="Subir">⬆️</button>
+              <button class="action-btn move-down" onclick="moverPersona(${p.id}, 'abajo')" ${!puedeBajar ? 'disabled' : ''} title="Bajar">⬇️</button>
+              <button class="action-btn" onclick="abrirModalEditar(${p.id})" title="Editar">✏️</button>
+              <button class="action-btn delete" onclick="eliminarPersona(${p.id})" title="Borrar">🗑️</button>
+            </div>
           </td>
         `;
         tabla.appendChild(fila);
@@ -825,7 +926,6 @@
         return;
       }
 
-      // Crear HTML para Excel con formato profesional
       let html = `
         <html xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40">
         <head>
@@ -893,10 +993,10 @@
 
         html += `
           <tr class="${claseFila}">
-            <td>${p.nombre} ${p.apellido}</td>
-            <td>${p.dni || '-'}</td>
-            <td>${p.telefono || '-'}</td>
-            <td>${p.rango}</td>
+            <td>'${p.nombre} ${p.apellido}</td>
+            <td>'${p.dni || '-'}</td>
+            <td>'${p.telefono || '-'}</td>
+            <td>'${p.rango}</td>
             <td style="text-align: center;">${totalNumeros}</td>
             <td style="text-align: center;">${vendidas}</td>
             <td style="text-align: right;">${dineroTotal}</td>
@@ -953,4 +1053,6 @@
   </script>
 </body>
 </html>
+
+
 
