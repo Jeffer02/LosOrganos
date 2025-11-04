@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Control de Polladas</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+      border-bottom: 5px solid #764ba2;
+    }
+
+    header h1 {
+      font-size: 2.8em;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    header p {
+      opacity: 0.95;
+      font-size: 1.1em;
+    }
+
+    .main-content {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 30px;
+      padding: 30px;
+    }
+
+    .sidebar {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+      border: 2px solid #e0e0e0;
+    }
+
+    .sidebar h3 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 18px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid #667eea;
+      margin-bottom: 15px;
+    }
+
+    .stat-card.success {
+      border-left-color: #28a745;
+    }
+
+    .stat-card label {
+      display: block;
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .stat-card .value {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .stat-card.success .value {
+      color: #28a745;
+    }
+
+    .buttons-group {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-size: 0.95em;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #218838;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
+    }
+
+    .table-wrapper {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 18px 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.95em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #e9ecef;
+    }
+
+    tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    .persona-info {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .numero-item {
+      display: inline-block;
+      margin: 5px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      border: 2px solid #ddd;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+      font-size: 0.9em;
+    }
+
+    .numero-item.vendido {
+      background: #28a745;
+      color: white;
+      border-color: #28a745;
+    }
+
+    .numero-item.pendiente:hover {
+      background: #e7f3ff;
+      border-color: #667eea;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .stat-mini {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 6px;
+      border-left: 3px solid #667eea;
+    }
+
+    .stat-mini label {
+      color: #666;
+      font-size: 0.85em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-mini .value {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .stat-mini.success {
+      border-left-color: #28a745;
+    }
+
+    .stat-mini.success .value {
+      color: #28a745;
+    }
+
+    .stat-mini.danger {
+      border-left-color: #dc3545;
+    }
+
+    .stat-mini.danger .value {
+      color: #dc3545;
+    }
+
+    .action-btn {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85em;
+      transition: all 0.2s;
+      background: #667eea;
+      color: white;
+      margin-right: 5px;
+    }
+
+    .action-btn:hover {
+      background: #764ba2;
+    }
+
+    .action-btn.delete {
+      background: #dc3545;
+    }
+
+    .action-btn.delete:hover {
+      background: #c82333;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #667eea;
+    }
+
+    .modal-header h2 {
+      color: #333;
+      margin: 0;
+    }
+
+    .close {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 0.95em;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
+    }
+
+    .numeros-lista {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 15px;
+      background: #f8f9fa;
+      margin-bottom: 20px;
+      margin-top: 15px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📋 Control de Polladas</h1>
+      <p>Sistema Completo de Gestión</p>
+    </header>
+
+    <div class="main-content">
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <h3>📊 Resumen</h3>
+        
+        <div class="stat-card">
+          <label>Total Personas</label>
+          <div class="value" id="totalPersonas">0</div>
+        </div>
+
+        <div class="stat-card success">
+          <label>Total Números</label>
+          <div class="value" id="totalNumeros">0</div>
+        </div>
+
+        <div class="stat-card success">
+          <label>Vendidos</label>
+          <div class="value" id="vendidos">0</div>
+        </div>
+
+        <div class="stat-card">
+          <label>Dinero Recaudado</label>
+          <div class="value">S/. <span id="dineroRecaudado">0</span></div>
+        </div>
+
+        <div class="stat-card">
+          <label>Dinero Faltante</label>
+          <div class="value">S/. <span id="dineroFaltante">0</span></div>
+        </div>
+
+        <div class="buttons-group">
+          <button class="btn btn-primary" onclick="abrirModalAgregar()">➕ Agregar Persona</button>
+          <button class="btn btn-success" onclick="exportarExcel()">📥 Exportar Excel</button>
+          <button class="btn btn-danger" onclick="limpiarTodo()">🗑️ Limpiar Todo</button>
+        </div>
+      </div>
+
+      <!-- CONTENIDO PRINCIPAL -->
+      <div class="content">
+        <div class="toolbar">
+          <div class="search-box">
+            <input type="text" id="buscar" placeholder="🔍 Buscar por nombre o DNI...">
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Persona</th>
+                <th>DNI</th>
+                <th>Teléfono</th>
+                <th>Rango</th>
+                <th>Total</th>
+                <th>Vendidas</th>
+                <th>Dinero</th>
+                <th>% Avance</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tabla">
+              <tr>
+                <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+                  👤 No hay personas. Haz clic en "➕ Agregar Persona" para comenzar.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL AGREGAR PERSONA -->
+  <div id="modalAgregar" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Agregar Nueva Persona</h2>
+        <span class="close" onclick="cerrarModal()">&times;</span>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre *</label>
+        <input type="text" id="nombre" placeholder="Ej: JUAN">
+      </div>
+
+      <div class="form-group">
+        <label>Apellido</label>
+        <input type="text" id="apellido" placeholder="Ej: PÉREZ">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>DNI</label>
+          <input type="text" id="dni" placeholder="12345678">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" id="telefono" placeholder="987654321">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Rango de Números * (Ej: 1-10, 30-40)</label>
+        <input type="text" id="rango" placeholder="1-10">
+      </div>
+
+      <div class="modal-buttons">
+        <button class="btn btn-danger" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="guardarPersona()">Guardar Persona</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDITAR NÚMEROS -->
+  <div id="modalEditar" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalEditarTitulo"></h2>
+        <span class="close" onclick="cerrarModal()">&times;</span>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-mini">
+          <label>Asignados</label>
+          <div class="value" id="modalTotal">0</div>
+        </div>
+        <div class="stat-mini success">
+          <label>Vendidos ✓</label>
+          <div class="value" id="modalVendidos">0</div>
+        </div>
+        <div class="stat-mini danger">
+          <label>Pendientes</label>
+          <div class="value" id="modalPendientes">0</div>
+        </div>
+        <div class="stat-mini">
+          <label>Dinero Total</label>
+          <div class="value">S/. <span id="modalDinero">0</span></div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 25px; margin-bottom: 15px;">Click en los números para marcar como vendidos:</h3>
+      <div class="numeros-lista" id="numerosLista"></div>
+
+      <div class="modal-buttons">
+        <button class="btn btn-danger" onclick="cerrarModal()">Cerrar</button>
+        <button class="btn btn-primary" onclick="guardarEdicion()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PRECIO_POLLADA = 10;
+    let personas = [];
+    let personaEditando = null;
+
+    function guardarDatos() {
+      localStorage.setItem('personasControl', JSON.stringify(personas));
+    }
+
+    function cargarDatos() {
+      const datos = localStorage.getItem('personasControl');
+      if (datos) {
+        personas = JSON.parse(datos);
+      }
+      mostrarTabla();
+    }
+
+    function extraerNumeros(rango) {
+      if (!rango || typeof rango !== 'string') return [];
+      const partes = rango.trim().split('-');
+      if (partes.length !== 2) return [];
+      const inicio = parseInt(partes[0].trim());
+      const fin = parseInt(partes[1].trim());
+      if (isNaN(inicio) || isNaN(fin) || inicio > fin) return [];
+      const numeros = [];
+      for (let i = inicio; i <= fin; i++) {
+        numeros.push(i);
+      }
+      return numeros;
+    }
+
+    function abrirModalAgregar() {
+      personaEditando = null;
+      document.getElementById('nombre').value = '';
+      document.getElementById('apellido').value = '';
+      document.getElementById('dni').value = '';
+      document.getElementById('telefono').value = '';
+      document.getElementById('rango').value = '';
+      document.getElementById('modalAgregar').style.display = 'block';
+    }
+
+    function guardarPersona() {
+      const nombre = document.getElementById('nombre').value.trim().toUpperCase();
+      const apellido = document.getElementById('apellido').value.trim().toUpperCase();
+      const dni = document.getElementById('dni').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const rango = document.getElementById('rango').value.trim();
+
+      if (!nombre || !rango) {
+        alert('❌ Nombre y Rango son obligatorios (Ej: 1-10)');
+        return;
+      }
+
+      const numeros = extraerNumeros(rango);
+      if (numeros.length === 0) {
+        alert('❌ Formato de rango incorrecto. Usa: "1-10", "30-40", etc.');
+        return;
+      }
+
+      const nuevoId = Math.max(...personas.map(p => p.id || 0), 0) + 1;
+
+      personas.push({
+        id: nuevoId,
+        nombre,
+        apellido,
+        dni,
+        telefono,
+        rango,
+        numeros,
+        numerosPagados: []
+      });
+
+      guardarDatos();
+      mostrarTabla();
+      cerrarModal();
+      alert('✅ Persona agregada correctamente');
+    }
+
+    function mostrarTabla() {
+      const tabla = document.getElementById('tabla');
+      const busqueda = document.getElementById('buscar').value.toLowerCase();
+      tabla.innerHTML = '';
+
+      if (personas.length === 0) {
+        tabla.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">👤 No hay personas. Agrega una para comenzar.</td></tr>`;
+        actualizarEstadisticas();
+        return;
+      }
+
+      const filtrados = personas.filter(p =>
+        p.nombre.toLowerCase().includes(busqueda) ||
+        p.apellido.toLowerCase().includes(busqueda) ||
+        (p.dni && p.dni.includes(busqueda))
+      );
+
+      if (filtrados.length === 0) {
+        tabla.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 40px; color: #999;">No se encontraron resultados</td></tr>`;
+        return;
+      }
+
+      filtrados.forEach(p => {
+        const totalNumeros = p.numeros.length;
+        const vendidas = (p.numerosPagados || []).length;
+        const dineroTotal = totalNumeros * PRECIO_POLLADA;
+        const dineroRecaudado = vendidas * PRECIO_POLLADA;
+        const porcentaje = totalNumeros > 0 ? ((vendidas / totalNumeros) * 100).toFixed(1) : 0;
+
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+          <td class="persona-info">${p.nombre} ${p.apellido}</td>
+          <td>${p.dni || '-'}</td>
+          <td>${p.telefono || '-'}</td>
+          <td><strong>${p.rango}</strong></td>
+          <td><strong>${totalNumeros}</strong></td>
+          <td><span style="background: #28a745; color: white; padding: 6px 12px; border-radius: 6px; font-weight: bold;">${vendidas}</span></td>
+          <td><strong>S/. ${dineroRecaudado}</strong> / ${dineroTotal}</td>
+          <td>
+            <div style="width: 100%; height: 25px; background: #e9ecef; border-radius: 10px; overflow: hidden;">
+              <div style="height: 100%; background: linear-gradient(90deg, #28a745, #20c997); width: ${porcentaje}%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8em; font-weight: bold;">
+                ${porcentaje}%
+              </div>
+            </div>
+          </td>
+          <td>
+            <button class="action-btn" onclick="abrirModalEditar(${p.id})">✏️ Editar</button>
+            <button class="action-btn delete" onclick="eliminarPersona(${p.id})">🗑️ Borrar</button>
+          </td>
+        `;
+        tabla.appendChild(fila);
+      });
+
+      actualizarEstadisticas();
+    }
+
+    function abrirModalEditar(id) {
+      personaEditando = personas.find(p => p.id === id);
+      if (!personaEditando) return;
+
+      const totalNumeros = personaEditando.numeros.length;
+      const vendidas = (personaEditando.numerosPagados || []).length;
+      const pendientes = totalNumeros - vendidas;
+      const dineroTotal = totalNumeros * PRECIO_POLLADA;
+
+      document.getElementById('modalEditarTitulo').textContent = `${personaEditando.nombre} ${personaEditando.apellido}`;
+      document.getElementById('modalTotal').textContent = totalNumeros;
+      document.getElementById('modalVendidos').textContent = vendidas;
+      document.getElementById('modalPendientes').textContent = pendientes;
+      document.getElementById('modalDinero').textContent = dineroTotal;
+
+      const numerosLista = document.getElementById('numerosLista');
+      numerosLista.innerHTML = '';
+
+      personaEditando.numeros.forEach(num => {
+        const btn = document.createElement('div');
+        btn.className = `numero-item ${(personaEditando.numerosPagados || []).includes(num) ? 'vendido' : 'pendiente'}`;
+        btn.textContent = num;
+        btn.onclick = () => toggleNumero(num);
+        numerosLista.appendChild(btn);
+      });
+
+      document.getElementById('modalEditar').style.display = 'block';
+    }
+
+    function toggleNumero(numero) {
+      if (!personaEditando.numerosPagados) {
+        personaEditando.numerosPagados = [];
+      }
+
+      const index = personaEditando.numerosPagados.indexOf(numero);
+      if (index > -1) {
+        personaEditando.numerosPagados.splice(index, 1);
+      } else {
+        personaEditando.numerosPagados.push(numero);
+      }
+
+      const totalNumeros = personaEditando.numeros.length;
+      const vendidas = personaEditando.numerosPagados.length;
+      const pendientes = totalNumeros - vendidas;
+
+      document.getElementById('modalVendidos').textContent = vendidas;
+      document.getElementById('modalPendientes').textContent = pendientes;
+
+      const numerosLista = document.getElementById('numerosLista');
+      const btns = numerosLista.querySelectorAll('.numero-item');
+      btns.forEach(btn => {
+        const num = parseInt(btn.textContent);
+        if (personaEditando.numerosPagados.includes(num)) {
+          btn.classList.add('vendido');
+          btn.classList.remove('pendiente');
+        } else {
+          btn.classList.remove('vendido');
+          btn.classList.add('pendiente');
+        }
+      });
+    }
+
+    function guardarEdicion() {
+      guardarDatos();
+      mostrarTabla();
+      cerrarModal();
+      alert('✅ Cambios guardados correctamente');
+    }
+
+    function eliminarPersona(id) {
+      if (!confirm('⚠️ ¿Estás seguro de eliminar esta persona?')) return;
+      personas = personas.filter(p => p.id !== id);
+      guardarDatos();
+      mostrarTabla();
+      alert('✅ Persona eliminada');
+    }
+
+    function limpiarTodo() {
+      if (!confirm('⚠️ ¿ESTÁS SEGURO? Esto eliminará TODOS los datos')) return;
+      personas = [];
+      guardarDatos();
+      mostrarTabla();
+      alert('✅ Todos los datos fueron eliminados');
+    }
+
+    function actualizarEstadisticas() {
+      const totalPersonas = personas.length;
+      const totalNumeros = personas.reduce((sum, p) => sum + (p.numeros ? p.numeros.length : 0), 0);
+      const vendidos = personas.reduce((sum, p) => sum + (p.numerosPagados ? p.numerosPagados.length : 0), 0);
+      const dineroRecaudado = vendidos * PRECIO_POLLADA;
+      const dineroTotal = totalNumeros * PRECIO_POLLADA;
+      const dineroFaltante = dineroTotal - dineroRecaudado;
+
+      document.getElementById('totalPersonas').textContent = totalPersonas;
+      document.getElementById('totalNumeros').textContent = totalNumeros;
+      document.getElementById('vendidos').textContent = vendidos;
+      document.getElementById('dineroRecaudado').textContent = dineroRecaudado;
+      document.getElementById('dineroFaltante').textContent = dineroFaltante;
+    }
+
+    function exportarExcel() {
+      if (personas.length === 0) {
+        alert('⚠️ No hay personas para exportar');
+        return;
+      }
+
+      // Crear HTML para Excel con formato profesional
+      let html = `
+        <html xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40">
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            table { border-collapse: collapse; width: 100%; }
+            th { 
+              background-color: #667eea; 
+              color: white; 
+              border: 1px solid #333;
+              padding: 12px;
+              font-weight: bold;
+              text-align: left;
+            }
+            td { 
+              border: 1px solid #cccccc; 
+              padding: 10px;
+            }
+            .header { background-color: #667eea; color: white; font-weight: bold; font-size: 14px; }
+            .total { background-color: #f0f0f0; font-weight: bold; }
+            .alternado { background-color: #f9f9f9; }
+          </style>
+        </head>
+        <body>
+          <table>
+            <tr>
+              <td colspan="10" class="header" style="padding: 15px; text-align: center; font-size: 16px;">REPORTE DE CONTROL DE POLLADAS</td>
+            </tr>
+            <tr>
+              <td colspan="10" class="header" style="padding: 10px; text-align: center;">Perú Primero - Los Órganos | Generado: ${new Date().toLocaleDateString('es-PE')}</td>
+            </tr>
+            <tr>
+              <th>Persona</th>
+              <th>DNI</th>
+              <th>Teléfono</th>
+              <th>Rango</th>
+              <th>Asignados</th>
+              <th>Vendidos</th>
+              <th>Dinero Total (S/.)</th>
+              <th>Dinero Recaudado (S/.)</th>
+              <th>Dinero Faltante (S/.)</th>
+              <th>% Avance</th>
+            </tr>
+      `;
+
+      let totalAsignados = 0;
+      let totalVendidos = 0;
+      let totalDinero = 0;
+      let totalRecaudado = 0;
+
+      personas.forEach((p, index) => {
+        const totalNumeros = p.numeros.length;
+        const vendidas = (p.numerosPagados || []).length;
+        const dineroTotal = totalNumeros * PRECIO_POLLADA;
+        const dineroRecaudado = vendidas * PRECIO_POLLADA;
+        const dineroFaltante = dineroTotal - dineroRecaudado;
+        const porcentaje = totalNumeros > 0 ? ((vendidas / totalNumeros) * 100).toFixed(1) : 0;
+
+        totalAsignados += totalNumeros;
+        totalVendidos += vendidas;
+        totalDinero += dineroTotal;
+        totalRecaudado += dineroRecaudado;
+
+        const claseFila = index % 2 === 0 ? 'alternado' : '';
+
+        html += `
+          <tr class="${claseFila}">
+            <td>${p.nombre} ${p.apellido}</td>
+            <td>${p.dni || '-'}</td>
+            <td>${p.telefono || '-'}</td>
+            <td>${p.rango}</td>
+            <td style="text-align: center;">${totalNumeros}</td>
+            <td style="text-align: center;">${vendidas}</td>
+            <td style="text-align: right;">${dineroTotal}</td>
+            <td style="text-align: right;">${dineroRecaudado}</td>
+            <td style="text-align: right;">${dineroFaltante}</td>
+            <td style="text-align: center;">${porcentaje}%</td>
+          </tr>
+        `;
+      });
+
+      const totalFaltante = totalDinero - totalRecaudado;
+      html += `
+        <tr class="total">
+          <td colspan="4"><strong>TOTAL GENERAL</strong></td>
+          <td style="text-align: center;"><strong>${totalAsignados}</strong></td>
+          <td style="text-align: center;"><strong>${totalVendidos}</strong></td>
+          <td style="text-align: right;"><strong>${totalDinero}</strong></td>
+          <td style="text-align: right;"><strong>${totalRecaudado}</strong></td>
+          <td style="text-align: right;"><strong>${totalFaltante}</strong></td>
+          <td style="text-align: center;"><strong>${((totalVendidos / totalAsignados) * 100).toFixed(1)}%</strong></td>
+        </tr>
+      `;
+
+      html += `
+          </table>
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob([html], { type: 'application/vnd.ms-excel;charset=UTF-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'reporte-polladas-' + new Date().toLocaleDateString('es-PE') + '.xls';
+      link.click();
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalAgregar').style.display = 'none';
+      document.getElementById('modalEditar').style.display = 'none';
+    }
+
+    document.getElementById('buscar').addEventListener('keyup', mostrarTabla);
+
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('modalAgregar')) {
+        cerrarModal();
+      }
+      if (event.target == document.getElementById('modalEditar')) {
+        cerrarModal();
+      }
+    }
+
+    cargarDatos();
+  </script>
+</body>
+</html>
